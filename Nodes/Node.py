@@ -11,9 +11,10 @@ __status__ = "Production"
 
 
 class Node:
-    # def __init__(self):
-    #     self.__fields = {'Version', 'UnVersion' 'LastSuccessful', 'LastUnsuccessful', 'Duration', 'Weather',
-    #                      'CurrentState'}
+    def __init__(self):
+        self.__fields = {'Version', 'UnVersion' 'LastSuccessful', 'LastUnsuccessful', 'Duration', 'Weather',
+                         'CurrentState'}
+        self.test = 'try'
 
     def get(self, whom, **what):
         ...

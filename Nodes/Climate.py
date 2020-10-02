@@ -14,18 +14,16 @@ __status__ = "Production"
 
 
 class Climate(Node, JenkinsWeb):
-    JOB_CLIMATE = 'job_climate'
-
     def __init__(self):
-        ...
+        super().__init__()
 
-    def get_bin(self):
-        ...
+    def __str__(self):
+        return 'job_climate'
 
 
 if __name__ == '__main__':
     climate = Climate()
-    log.info(climate.check_versions(Climate.JOB_CLIMATE))
+    log.info(climate.check_versions())
 
 
 
