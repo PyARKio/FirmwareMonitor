@@ -13,22 +13,20 @@ __email__ = "fedoretss@gmail.com"
 __status__ = "Production"
 
 
-class Climate(Node, JenkinsWeb):
+class Door(Node, JenkinsWeb):
     def __init__(self):
         super().__init__()
-        self.version = None
 
     def __str__(self):
-        return 'climate'
+        return 'door'
 
 
 if __name__ == '__main__':
-    climate = Climate()
-    log.info(climate.check_versions())
-    climate.get_bin()
-    climate.get_zip()
-    climate.get_deb()
-
+    door = Door()
+    log.info(door.check_versions())
+    door.get_bin()
+    door.get_zip()
+    door.get_deb()
 
 
 

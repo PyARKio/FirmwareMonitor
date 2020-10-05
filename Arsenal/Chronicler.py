@@ -31,12 +31,12 @@ log.setLevel(logging.DEBUG)
 log.addHandler(stream_handler)
 
 if platform.system() == 'Linux':
-    file_handler = logging.handlers.RotatingFileHandler('/home/qwerty/LOGS/FirmwareMonitor.log', 'a', 10 * 1024 * 1024, 10)
+    file_handler = logging.handlers.RotatingFileHandler('/media/qwerty/Back-UP/LOGS/FirmwareMonitor.log', 'a', 10 * 1024 * 1024, 100)
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(trace_pattern)
     log.addHandler(file_handler)
 elif platform.system() == 'Windows':
-    file_handler = logging.handlers.RotatingFileHandler('d:/LOGS/FirmwareMonitor.log', 'a', 10 * 1024 * 1024, 10)
+    file_handler = logging.handlers.RotatingFileHandler('d:/LOGS/FirmwareMonitor.log', 'a', 10 * 1024 * 1024, 100)
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(trace_pattern)
     log.addHandler(file_handler)
