@@ -16,6 +16,7 @@ __status__ = "Production"
 class Door(Node, JenkinsWeb):
     def __init__(self):
         super().__init__()
+        self.version = None
 
     def __str__(self):
         return 'door'
