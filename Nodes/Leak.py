@@ -12,27 +12,27 @@ __email__ = "fedoretss@gmail.com"
 __status__ = "Production"
 
 
-class Door(Node, JenkinsWeb, Zip):
+class Leak(Node, JenkinsWeb, Zip):
     def __init__(self):
         super().__init__()
 
     def __str__(self):
-        return 'door'
+        return 'leak'
 
 
 if __name__ == '__main__':
-    door = Door()
-    if door.check_versions() > door.version:
+    leak = Leak()
+    if leak.check_versions() > leak.version:
 
-        log.info(door.version)
-        door.version = door.check_versions()
-        log.info(door.version)
+        log.info(leak.version)
+        leak.version = leak.check_versions()
+        log.info(leak.version)
 
-        door.get_bin()
-        door.get_zip()
-        door.get_deb()
+        leak.get_bin()
+        leak.get_zip()
+        leak.get_deb()
 
-        door.reload()
+        leak.reload()
 
 
 

@@ -1,6 +1,5 @@
 # -- coding: utf-8 --
 from __future__ import unicode_literals
-from abc import ABC, abstractmethod
 from Arsenal.Chronicler import log
 import requests
 import bs4
@@ -14,7 +13,7 @@ __email__ = "fedoretss@gmail.com"
 __status__ = "Production"
 
 
-class JenkinsWeb(ABC):
+class JenkinsWeb:
     DESTINATION = '/media/qwerty/Back-UP/Firmwares/'
     NODES = 'http://10.8.0.1:9090/view/nodes/'
     DEB = 'http://10.8.0.1:9090/view/nodes/job/{}/ws/rfNode/{}'
@@ -23,23 +22,24 @@ class JenkinsWeb(ABC):
     DEB_PACK = '{}_1.0_{}_arm64.deb'
 
     def __init__(self):
-        self.last_error = None
-        self.ver = None
+        self.__last_error = None
+        self.__job = None
+        self.__data = None
 
     # CHECK AVAILABLE VERSION -------------------------------------------------------------------------
     def check_versions(self):
         try:
-            response = requests.get(JenkinsWeb.NODES)
+            response = requests.get(self.NODES)
         except Exception as err:
             log.error(err)
-            self.last_error = err
+            self.__last_error = err
             return False
 
         g = bs4.BeautifulSoup(response.text, 'html.parser')
-        job = g.find(id=self.__get_job__str()).findAll(class_='model-link inside')[1].text
-        self.ver = re.sub('#', '', job)
+        self.__job = int(re.sub('#', '', g.find(id=self.__get_job__str()).findAll(class_='model-link inside')[1].text))
+        self.__data = re.sub(':', '_', re.sub('-', '_', g.find(id=self.__get_job__str()).findAll('td')[6].get('data')))
 
-        return self.ver
+        return self.__job
 
     def __get_job__str(self):
         return 'job_{}'.format(self)
@@ -54,7 +54,7 @@ class JenkinsWeb(ABC):
             response = requests.get(__get_A)
         except Exception as err:
             log.error(err)
-            self.last_error = err
+            self.__last_error = err
             return False
         open('{}/{}'.format(__dest, __bin_A), 'wb').write(response.content)
 
@@ -62,18 +62,18 @@ class JenkinsWeb(ABC):
             response = requests.get(__get_B)
         except Exception as err:
             log.error(err)
-            self.last_error = err
+            self.__last_error = err
             return False
         open('{}/{}'.format(__dest, __bin_B), 'wb').write(response.content)
 
     def __get_bin_name(self):
-        return '{}A.bin'.format(self.ver), '{}B.bin'.format(self.ver)
+        return '{}A.bin'.format(self.__job), '{}B.bin'.format(self.__job)
 
     def __get_bin_url(self, A, B):
-        return JenkinsWeb.BIN.format(self, self, A), JenkinsWeb.BIN.format(self, self, B)
+        return self.BIN.format(self, self, A), self.BIN.format(self, self, B)
 
     def __mkpath_bin(self):
-        path = os.path.join(JenkinsWeb.DESTINATION, '{}/{}/BIN'.format(self, self.ver))
+        path = os.path.join(self.DESTINATION, '{}_{}/{}/BIN'.format(self, self.__data, self.__job))
         try:
             os.makedirs(path)
         except OSError as err:
@@ -90,19 +90,19 @@ class JenkinsWeb(ABC):
             response = requests.get(__zip)
         except Exception as err:
             log.error(err)
-            self.last_error = err
+            self.__last_error = err
             return False
 
         open('{}/{}'.format(__dest, __zip_name), 'wb').write(response.content)
 
     def __get_zip_name(self):
-        return '{}.zip'.format(self.ver)
+        return '{}.zip'.format(self.__job)
 
     def __get_zip_url(self):
-        return JenkinsWeb.ZIP.format(self)
+        return self.ZIP.format(self)
 
     def __mkpath_zip(self):
-        path = os.path.join(JenkinsWeb.DESTINATION, '{}/{}/ZIP'.format(self, self.ver))
+        path = os.path.join(self.DESTINATION, '{}_{}/{}/ZIP'.format(self, self.__data, self.__job))
         try:
             os.makedirs(path)
         except OSError as err:
@@ -119,25 +119,36 @@ class JenkinsWeb(ABC):
             response = requests.get(__deb)
         except Exception as err:
             log.error(err)
-            self.last_error = err
+            self.__last_error = err
             return False
 
         open('{}/{}'.format(__dest, __deb_name), 'wb').write(response.content)
 
     def __get_deb_name(self):
-        return JenkinsWeb.DEB_PACK.format(self, self.ver)
+        return self.DEB_PACK.format(self, self.__job)
 
     def __get_deb_url(self, deb_name):
-        return JenkinsWeb.DEB.format(self, deb_name)
+        return self.DEB.format(self, deb_name)
 
     def __mkpath_deb(self):
-        path = os.path.join(JenkinsWeb.DESTINATION, '{}/{}/DEB'.format(self, self.ver))
+        path = os.path.join(self.DESTINATION, '{}_{}/{}/DEB'.format(self, self.__data, self.__job))
         try:
             os.makedirs(path)
         except OSError as err:
             ...
         return path
 
+    @property
+    def last_error(self):
+        return self.__last_error
+
+    @property
+    def job(self):
+        return self.__job
+
+    @property
+    def data(self):
+        return self.__data
 
 
 

@@ -12,27 +12,27 @@ __email__ = "fedoretss@gmail.com"
 __status__ = "Production"
 
 
-class Door(Node, JenkinsWeb, Zip):
+class Plug(Node, JenkinsWeb, Zip):
     def __init__(self):
         super().__init__()
 
     def __str__(self):
-        return 'door'
+        return 'plug'
 
 
 if __name__ == '__main__':
-    door = Door()
-    if door.check_versions() > door.version:
+    plug = Plug()
+    if plug.check_versions() > plug.version:
 
-        log.info(door.version)
-        door.version = door.check_versions()
-        log.info(door.version)
+        log.info(plug.version)
+        plug.version = plug.check_versions()
+        log.info(plug.version)
 
-        door.get_bin()
-        door.get_zip()
-        door.get_deb()
+        plug.get_bin()
+        plug.get_zip()
+        plug.get_deb()
 
-        door.reload()
+        plug.reload()
 
 
 

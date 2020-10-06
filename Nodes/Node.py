@@ -14,7 +14,7 @@ class Node:
     def __init__(self):
         self.__fields = {'Version', 'UnVersion' 'LastSuccessful', 'LastUnsuccessful', 'Duration', 'Weather',
                          'CurrentState'}
-        self.test = 'try'
+        self.__version = -1
 
     def get(self, whom, **what):
         ...
@@ -22,6 +22,14 @@ class Node:
     def set(self, whom, **what):
         log.info(whom)
         log.info(what)
+
+    @property
+    def version(self):
+        return self.__version
+
+    @version.setter
+    def version(self, ver):
+        self.__version = ver
 
 
 if __name__ == '__main__':
