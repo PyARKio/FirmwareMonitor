@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from abc import ABC, abstractmethod
 from Arsenal.Chronicler import log
+from celery import Celery
 
 
 __author__ = 'PyARK'
