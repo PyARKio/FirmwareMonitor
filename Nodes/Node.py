@@ -20,7 +20,7 @@ class Node(JenkinsWeb):
 
         self.__version = -1
         self.__delay_from = 1
-        self.__delay_to = 14
+        self.__delay_to = 59
         self.__delay = 0
         self.__chronometer = chrono
 
