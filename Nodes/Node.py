@@ -29,8 +29,8 @@ class Node(JenkinsWeb):
 
     def __set_delay(self):
         self.__delay += randint(self.__delay_from, self.__delay_to)
-        if self.__delay > 14:
-            self.__delay -= 15
+        if self.__delay > 59:
+            self.__delay -= 60
         return self.__delay
 
     def add_mark(self):
