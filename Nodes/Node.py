@@ -1,6 +1,5 @@
 # -- coding: utf-8 --
 from __future__ import unicode_literals
-from abc import ABC, abstractmethod
 from Arsenal.JenkinsWeb import JenkinsWeb
 from Arsenal.ScanDisc import ScanDisk
 from Arsenal.Chronicler import log
@@ -35,7 +34,11 @@ class Node(JenkinsWeb):
         return self.__delay
 
     def add_mark(self):
-        self.__chronometer.add_marks(whom=self, mark={'Position': self.__set_delay(), 'CallBack': self.check_versions})
+        self.__chronometer.add_marks(whom=self, mark={'Position': self.__set_delay(), 'CallBack': self.check_version})
+
+    def check_version(self):
+        self.check_versions()
+        self.add_mark()
 
     @property
     def version(self):

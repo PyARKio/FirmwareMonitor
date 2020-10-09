@@ -23,7 +23,7 @@ class JenkinsWeb:
 
     def __init__(self):
         self.__last_error = None
-        self.__job = 165
+        self.__job = -1
         self.__date = None
 
     # CHECK AVAILABLE VERSION -------------------------------------------------------------------------

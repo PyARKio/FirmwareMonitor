@@ -4,6 +4,7 @@ from Arsenal.Chronicler import log
 import shutil
 import zipfile
 import os
+import re
 
 
 __author__ = 'PyARK'
@@ -20,56 +21,53 @@ __status__ = "Production"
 # Will be refactoring
 class Zip:
     @classmethod
-    def zip_reload(cls, name, date, job):
-        cls.zip = zipfile.ZipFile('/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/{}.zip'.format(name, job, date, job))
-        cls.__extract_node(name, cls.zip, date, job)
-        cls.__extract_A(name, cls.zip, date, job)
-        cls.__extract_B(name, cls.zip, date, job)
-        cls.__replace_node(name, date, job)
-        cls.__replace_A(name, date, job)
-        cls.__replace_B(name, date, job)
-        cls.__rmtree(name, date, job)
+    def zip_reload(cls, _path):
+        _node = _path.split('/')[5]
+        _job = _path.split('/')[8].split('.zip')[0]
+        _directory = re.sub('{}.zip'.format(_job), '', _path)
+
+        cls.zip = zipfile.ZipFile(_path)
+        cls.__extract_node(_node=_node, _zip=cls.zip, _directory=_directory)
+        cls.__extract_A(_job=_job, _zip=cls.zip, _directory=_directory)
+        cls.__extract_B(_job=_job, _zip=cls.zip, _directory=_directory)
+        cls.__replace_node(_directory=_directory, _node=_node)
+        cls.__replace_A(_directory=_directory, _job=_job)
+        cls.__replace_B(_directory=_directory, _job=_job)
+        cls.__rmtree(_directory=_directory)
 
     @staticmethod
-    def __extract_node(name, _zip, date, job):
-        log.info(_zip.extract(member='output/node_all_{}.bin'.format(name),
-                              path='/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/'.format(name, job, date)))
+    def __extract_node(_node, _zip, _directory):
+        log.info(_zip.extract(member='output/node_all_{}.bin'.format(_node),
+                              path=_directory))
 
     @staticmethod
-    def __extract_A(name, _zip, date, job):
-        log.info(_zip.extract(member='output/{}A.bin'.format(job),
-                              path='/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/'.format(name, job, date)))
+    def __extract_A(_job, _zip, _directory):
+        log.info(_zip.extract(member='output/{}A.bin'.format(_job),
+                              path=_directory))
 
     @staticmethod
-    def __extract_B(name, _zip, date, job):
-        log.info(_zip.extract(member='output/{}B.bin'.format(job),
-                              path='/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/'.format(name, job, date)))
+    def __extract_B(_job, _zip, _directory):
+        log.info(_zip.extract(member='output/{}B.bin'.format(_job),
+                              path=_directory))
 
     @staticmethod
-    def __replace_node(name, date, job):
-        log.info(os.replace('/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/output/node_all_{}.bin'.
-                            format(name, job, date, name),
-                            '/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/node_all_{}.bin'.
-                            format(name, job, date, name)))
+    def __replace_node(_directory, _node):
+        log.info(os.replace('{}output/node_all_{}.bin'.format(_directory, _node),
+                            '{}node_all_{}.bin'.format(_directory, _node)))
 
     @staticmethod
-    def __replace_A(name, date, job):
-        log.info(os.replace('/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/output/{}A.bin'.
-                            format(name, job, date, job),
-                            '/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/{}A.bin'.
-                            format(name, job, date, job)))
+    def __replace_A(_directory, _job):
+        log.info(os.replace('{}output/{}A.bin'.format(_directory, _job),
+                            '{}{}A.bin'.format(_directory, _job)))
 
     @staticmethod
-    def __replace_B(name, date, job):
-        log.info(os.replace('/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/output/{}B.bin'.
-                            format(name, job, date, job),
-                            '/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/{}B.bin'.
-                            format(name, job, date, job)))
+    def __replace_B(_directory, _job):
+        log.info(os.replace('{}output/{}B.bin'.format(_directory, _job),
+                            '{}{}B.bin'.format(_directory, _job)))
 
     @staticmethod
-    def __rmtree(name, date, job):
-        log.info(shutil.rmtree('/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/output'.
-                               format(name, job, date)))
+    def __rmtree(_directory):
+        log.info(shutil.rmtree('{}output'.format(_directory)))
 
 
 

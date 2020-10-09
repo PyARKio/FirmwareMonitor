@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from Arsenal.UnZip import Zip
 from Arsenal.Chronicler import log
 import time
 import os
@@ -30,15 +31,13 @@ class ScanDisk:
 class Handler(FileSystemEventHandler):
     @staticmethod
     def on_any_event(event):
-        if event.is_directory and event.event_type == 'created':
-            log.info('Directory {}'.format(event.src_path))
+        if event.is_directory and event.event_type == 'created' and 'ZIP' in event.src_path:
+            # log.info('Directory {}'.format(event.src_path))
+            ...
 
-        # elif event.event_type == 'created':
-        #     # Take any action here when a file is first created.
-        #     log.info("Received created event - %s." % event.src_path)
-        #
-        # elif event.event_type == 'modified':
-        #     # Taken any action here when a file is modified.
-        #     log.info("Received modified event - %s." % event.src_path)
+        elif event.event_type == 'created' and event.event_type == 'created' and '.zip' in event.src_path:
+            # Take any action here when a file is first created.
+            log.info("Received created event - %s" % event.src_path)
+            Zip.zip_reload(event.src_path)
 
 
