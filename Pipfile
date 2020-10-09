@@ -11,6 +11,7 @@ scp = "*"
 requests = "*"
 bs4 = "*"
 celery = "*"
+watchdog = "*"
 
 [requires]
 python_version = "3.8"

@@ -23,8 +23,8 @@ class JenkinsWeb:
 
     def __init__(self):
         self.__last_error = None
-        self.__job = None
-        self.__data = None
+        self.__job = 165
+        self.__date = None
 
     # CHECK AVAILABLE VERSION -------------------------------------------------------------------------
     def check_versions(self):
@@ -36,10 +36,18 @@ class JenkinsWeb:
             return False
 
         g = bs4.BeautifulSoup(response.text, 'html.parser')
-        self.__job = int(re.sub('#', '', g.find(id=self.__get_job__str()).findAll(class_='model-link inside')[1].text))
-        self.__data = re.sub(':', '_', re.sub('-', '_', g.find(id=self.__get_job__str()).findAll('td')[6].get('data')))
+        if self.__job < int(re.sub('#', '', g.find(id=self.__get_job__str()).findAll(class_='model-link inside')[1].text)):
+            self.__job = int(re.sub('#', '', g.find(id=self.__get_job__str()).findAll(class_='model-link inside')[1].text))
+            self.__date = re.sub(':', '_', re.sub('-', '_', g.find(id=self.__get_job__str()).findAll('td')[6].get('data')))
 
-        return self.__job
+            self.get_bin()
+            self.get_deb()
+            self.get_zip()
+
+        else:
+            log.info('ooo')
+
+        # return self.__job
 
     def __get_job__str(self):
         return 'job_{}'.format(self)
@@ -73,7 +81,7 @@ class JenkinsWeb:
         return self.BIN.format(self, self, A), self.BIN.format(self, self, B)
 
     def __mkpath_bin(self):
-        path = os.path.join(self.DESTINATION, '{}_{}/{}/BIN'.format(self, self.__data, self.__job))
+        path = os.path.join(self.DESTINATION, '{}/{}___{}/BIN'.format(self, self.__job, self.__date))
         try:
             os.makedirs(path)
         except OSError as err:
@@ -102,7 +110,7 @@ class JenkinsWeb:
         return self.ZIP.format(self)
 
     def __mkpath_zip(self):
-        path = os.path.join(self.DESTINATION, '{}_{}/{}/ZIP'.format(self, self.__data, self.__job))
+        path = os.path.join(self.DESTINATION, '{}/{}___{}/ZIP'.format(self, self.__job, self.__date))
         try:
             os.makedirs(path)
         except OSError as err:
@@ -131,7 +139,7 @@ class JenkinsWeb:
         return self.DEB.format(self, deb_name)
 
     def __mkpath_deb(self):
-        path = os.path.join(self.DESTINATION, '{}_{}/{}/DEB'.format(self, self.__data, self.__job))
+        path = os.path.join(self.DESTINATION, '{}/{}___{}/DEB'.format(self, self.__job, self.__date))
         try:
             os.makedirs(path)
         except OSError as err:
@@ -147,8 +155,8 @@ class JenkinsWeb:
         return self.__job
 
     @property
-    def data(self):
-        return self.__data
+    def date(self):
+        return self.__date
 
 
 

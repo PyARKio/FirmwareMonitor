@@ -1,8 +1,12 @@
 # -- coding: utf-8 --
 from __future__ import unicode_literals
 from abc import ABC, abstractmethod
+from Arsenal.JenkinsWeb import JenkinsWeb
+from Arsenal.ScanDisc import ScanDisk
 from Arsenal.Chronicler import log
 from celery import Celery
+from random import randint
+import os
 
 
 __author__ = 'PyARK'
@@ -11,18 +15,27 @@ __email__ = "fedoretss@gmail.com"
 __status__ = "Production"
 
 
-class Node:
-    def __init__(self):
-        self.__fields = {'Version', 'UnVersion' 'LastSuccessful', 'LastUnsuccessful', 'Duration', 'Weather',
-                         'CurrentState'}
+class Node(JenkinsWeb):
+    def __init__(self, chrono):
+        super().__init__()
+
         self.__version = -1
+        self.__delay_from = 1
+        self.__delay_to = 14
+        self.__delay = 0
+        self.__chronometer = chrono
 
-    def get(self, whom, **what):
-        ...
+        self._scan_disc = ScanDisk(directory_to_watch=os.path.join(self.DESTINATION, '{}'.format(self)))
+        self._scan_disc.run()
 
-    def set(self, whom, **what):
-        log.info(whom)
-        log.info(what)
+    def __set_delay(self):
+        self.__delay += randint(self.__delay_from, self.__delay_to)
+        if self.__delay > 14:
+            self.__delay -= 15
+        return self.__delay
+
+    def add_mark(self):
+        self.__chronometer.add_marks(whom=self, mark={'Position': self.__set_delay(), 'CallBack': self.check_versions})
 
     @property
     def version(self):
@@ -33,7 +46,4 @@ class Node:
         self.__version = ver
 
 
-if __name__ == '__main__':
-    node = Node()
-    node.set(whom=__name__, version='12', type='Climate')
 

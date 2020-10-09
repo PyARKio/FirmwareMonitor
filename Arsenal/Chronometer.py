@@ -14,7 +14,7 @@ __status__ = "Production"
 class Chronometer(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
-        self.__kvant = 60
+        self.__kvant = 1
         self.__run = True
         self.__current_mark = 0
         self.__clock_face = {}

@@ -1,6 +1,5 @@
 # -- coding: utf-8 --
 from __future__ import unicode_literals
-from Arsenal.JenkinsWeb import JenkinsWeb
 from Arsenal.Chronicler import log
 from Arsenal.UnZip import Zip
 from Nodes.Node import Node
@@ -12,16 +11,17 @@ __email__ = "fedoretss@gmail.com"
 __status__ = "Production"
 
 
-class Door(Node, JenkinsWeb, Zip):
-    def __init__(self):
-        super().__init__()
+class Door(Node):
 
     def __str__(self):
         return 'door'
 
+    def sc(self):
+        self._scan_disc.scan_disc()
+
 
 if __name__ == '__main__':
-    door = Door()
+    door = Door('')
     if door.check_versions() > door.version:
 
         log.info(door.version)
@@ -32,7 +32,7 @@ if __name__ == '__main__':
         door.get_zip()
         door.get_deb()
 
-        door.reload()
+        Zip.zip_reload(door, door.date, door.job)
 
 
 

@@ -17,57 +17,59 @@ __status__ = "Production"
 # log.info(zip.infolist())
 
 
+# Will be refactoring
 class Zip:
-    def __init__(self):
-        self.zip = None
+    @classmethod
+    def zip_reload(cls, name, date, job):
+        cls.zip = zipfile.ZipFile('/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/{}.zip'.format(name, job, date, job))
+        cls.__extract_node(name, cls.zip, date, job)
+        cls.__extract_A(name, cls.zip, date, job)
+        cls.__extract_B(name, cls.zip, date, job)
+        cls.__replace_node(name, date, job)
+        cls.__replace_A(name, date, job)
+        cls.__replace_B(name, date, job)
+        cls.__rmtree(name, date, job)
 
-    def reload(self):
-        self.zip = zipfile.ZipFile('/media/qwerty/Back-UP/Firmwares/{}_{}/{}/ZIP/{}.zip'.format(self,
-                                                                                                self.data,
-                                                                                                self.version,
-                                                                                                self.version))
-        self.__extract_node()
-        self.__extract_A()
-        self.__extract_B()
-        self.__replace_node()
-        self.__replace_A()
-        self.__replace_B()
-        self.__rmtree()
+    @staticmethod
+    def __extract_node(name, _zip, date, job):
+        log.info(_zip.extract(member='output/node_all_{}.bin'.format(name),
+                              path='/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/'.format(name, job, date)))
 
-    def __extract_node(self):
-        log.info(self.zip.extract(member='output/node_all_{}.bin'.format(self),
-                                  path='/media/qwerty/Back-UP/Firmwares/{}_{}/{}/ZIP/'.format(self, self.data, self.version)))
+    @staticmethod
+    def __extract_A(name, _zip, date, job):
+        log.info(_zip.extract(member='output/{}A.bin'.format(job),
+                              path='/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/'.format(name, job, date)))
 
-    def __extract_A(self):
-        log.info(self.zip.extract(member='output/{}A.bin'.format(self.version),
-                                  path='/media/qwerty/Back-UP/Firmwares/{}_{}/{}/ZIP/'.format(self, self.data, self.version)))
+    @staticmethod
+    def __extract_B(name, _zip, date, job):
+        log.info(_zip.extract(member='output/{}B.bin'.format(job),
+                              path='/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/'.format(name, job, date)))
 
-    def __extract_B(self):
-        log.info(self.zip.extract(member='output/{}B.bin'.format(self.version),
-                                  path='/media/qwerty/Back-UP/Firmwares/{}_{}/{}/ZIP/'.format(self, self.data, self.version)))
+    @staticmethod
+    def __replace_node(name, date, job):
+        log.info(os.replace('/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/output/node_all_{}.bin'.
+                            format(name, job, date, name),
+                            '/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/node_all_{}.bin'.
+                            format(name, job, date, name)))
 
-    def __replace_node(self):
-        log.info(os.replace('/media/qwerty/Back-UP/Firmwares/{}_{}/{}/ZIP/output/node_all_{}.bin'.
-                            format(self, self.data, self.version, self),
-                            '/media/qwerty/Back-UP/Firmwares/{}_{}/{}/ZIP/node_all_{}.bin'.
-                            format(self, self.data, self.version, self)))
+    @staticmethod
+    def __replace_A(name, date, job):
+        log.info(os.replace('/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/output/{}A.bin'.
+                            format(name, job, date, job),
+                            '/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/{}A.bin'.
+                            format(name, job, date, job)))
 
-    def __replace_A(self):
-        log.info(os.replace('/media/qwerty/Back-UP/Firmwares/{}_{}/{}/ZIP/output/{}A.bin'.
-                            format(self, self.data, self.version, self.version),
-                            '/media/qwerty/Back-UP/Firmwares/{}_{}/{}/ZIP/{}A.bin'.
-                            format(self, self.data, self.version, self.version)))
+    @staticmethod
+    def __replace_B(name, date, job):
+        log.info(os.replace('/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/output/{}B.bin'.
+                            format(name, job, date, job),
+                            '/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/{}B.bin'.
+                            format(name, job, date, job)))
 
-    def __replace_B(self):
-        log.info(os.replace('/media/qwerty/Back-UP/Firmwares/{}_{}/{}/ZIP/output/{}B.bin'.
-                            format(self, self.data, self.version, self.version),
-                            '/media/qwerty/Back-UP/Firmwares/{}_{}/{}/ZIP/{}B.bin'.
-                            format(self, self.data, self.version, self.version)))
-
-    def __rmtree(self):
-        log.info(shutil.rmtree('/media/qwerty/Back-UP/Firmwares/{}_{}/{}/ZIP/output'.
-                               format(self, self.data, self.version)))
-
+    @staticmethod
+    def __rmtree(name, date, job):
+        log.info(shutil.rmtree('/media/qwerty/Back-UP/Firmwares/{}/{}___{}/ZIP/output'.
+                               format(name, job, date)))
 
 
 
