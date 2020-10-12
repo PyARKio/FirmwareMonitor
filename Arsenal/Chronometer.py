@@ -23,6 +23,7 @@ class Chronometer(threading.Thread):
 
     def run(self):
         while self.__run:
+            log.debug(self.__current_mark)
             sleep(self.__kvant)
             for callback in self.__clock_face[self.__current_mark]:
                 log.info(callback)

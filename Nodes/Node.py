@@ -27,6 +27,8 @@ class Node(JenkinsWeb):
         self._scan_disc = ScanDisk(directory_to_watch=os.path.join(self.DESTINATION, '{}'.format(self)))
         self._scan_disc.run()
 
+        self.job = self._scan_disc.scan_disc()
+
     def __set_delay(self):
         self.__delay += randint(self.__delay_from, self.__delay_to)
         if self.__delay > 59:

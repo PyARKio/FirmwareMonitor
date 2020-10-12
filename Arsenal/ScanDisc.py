@@ -4,7 +4,6 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from Arsenal.UnZip import Zip
 from Arsenal.Chronicler import log
-import time
 import os
 
 
@@ -26,6 +25,16 @@ class ScanDisk:
 
     def scan_disc(self):
         log.info(os.listdir(self.__dtw))
+        job = []
+        for __job in os.listdir(self.__dtw):
+            try:
+                job.append(int(__job.split('___')[0]))
+            except Exception as err:
+                log.error(__job)
+                log.error(err)
+        job.sort()
+        log.info(job[-1])
+        return job[-1]
 
 
 class Handler(FileSystemEventHandler):
