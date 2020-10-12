@@ -11,6 +11,7 @@ from Nodes.Plug import Plug
 from Nodes.Relay import Relay
 from Nodes.Smoke import Smoke
 from Nodes.Valve import Valve
+from Nodes.Valve3D import Valve3D
 import time
 
 
@@ -34,6 +35,7 @@ class FirmwareMonitor:
         self.__relay = Relay(chrono=self.__chronometer)
         self.__smoke = Smoke(chrono=self.__chronometer)
         self.__valve = Valve(chrono=self.__chronometer)
+        self.__valve3d = Valve3D(chrono=self.__chronometer)
 
         self.__climate.add_mark()
         self.__door.add_mark()
@@ -44,6 +46,7 @@ class FirmwareMonitor:
         self.__relay.add_mark()
         self.__smoke.add_mark()
         self.__valve.add_mark()
+        self.__valve3d.add_mark()
 
     def go(self):
         while True:
