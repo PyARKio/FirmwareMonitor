@@ -24,7 +24,6 @@ class ScanDisk:
         self.observer.start()
 
     def scan_disc(self):
-        log.info(os.listdir(self.__dtw))
         job = []
         for __job in os.listdir(self.__dtw):
             try:
@@ -32,9 +31,16 @@ class ScanDisk:
             except Exception as err:
                 log.error(__job)
                 log.error(err)
-        job.sort()
-        log.info(job[-1])
-        return job[-1]
+        if job:
+            job.sort()
+            return job[-1]
+        else:
+            return -1
+
+    def full_dir_ident(self, job):
+        for __job in os.listdir(self.__dtw):
+            if str(job) in __job:
+                return __job
 
 
 class Handler(FileSystemEventHandler):

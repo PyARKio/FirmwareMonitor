@@ -26,8 +26,17 @@ class Node(JenkinsWeb):
 
         self._scan_disc = ScanDisk(directory_to_watch=os.path.join(self.DESTINATION, '{}'.format(self)))
         self._scan_disc.run()
-
         self.job = self._scan_disc.scan_disc()
+
+        self.add_mark()
+
+    @property
+    def version(self):
+        return self.__version
+
+    @version.setter
+    def version(self, ver):
+        self.__version = ver
 
     def __set_delay(self):
         self.__delay += randint(self.__delay_from, self.__delay_to)
@@ -42,13 +51,11 @@ class Node(JenkinsWeb):
         self.check_versions()
         self.add_mark()
 
-    @property
-    def version(self):
-        return self.__version
+    def path_to_deb(self):
+        return os.path.join(self.DESTINATION, self.__str__(), self._scan_disc.full_dir_ident(self.job), 'DEB',
+                            self.DEB_PACK.format(self, self.job))
 
-    @version.setter
-    def version(self, ver):
-        self.__version = ver
-
-
+    def path_to_hex(self):
+        return os.path.join(self.DESTINATION, self.__str__(), self._scan_disc.full_dir_ident(self.job), 'ZIP',
+                            'node_all_{}.bin'.format(self))
 

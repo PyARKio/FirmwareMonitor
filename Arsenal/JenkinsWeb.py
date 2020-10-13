@@ -156,9 +156,7 @@ class JenkinsWeb:
 
     @job.setter
     def job(self, data):
-        log.info(self.__job)
         self.__job = data
-        log.info(self.__job)
 
     @property
     def date(self):

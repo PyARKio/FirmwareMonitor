@@ -13,6 +13,7 @@ from Nodes.Smoke import Smoke
 from Nodes.Valve import Valve
 from Nodes.Valve3D import Valve3D
 import time
+import os
 
 
 __author__ = 'PyARK'
@@ -37,16 +38,9 @@ class FirmwareMonitor:
         self.__valve = Valve(chrono=self.__chronometer)
         self.__valve3d = Valve3D(chrono=self.__chronometer)
 
-        self.__climate.add_mark()
-        self.__door.add_mark()
-        self.__gas.add_mark()
-        self.__leak.add_mark()
-        self.__pir.add_mark()
-        self.__plug.add_mark()
-        self.__relay.add_mark()
-        self.__smoke.add_mark()
-        self.__valve.add_mark()
-        self.__valve3d.add_mark()
+        log.debug(self.__valve.path_to_deb())
+        log.debug(self.__valve.path_to_hex())
+        log.debug(os.stat(self.__valve.path_to_hex()))
 
     def go(self):
         while True:
