@@ -1,6 +1,5 @@
 # -- coding: utf-8 --
 from __future__ import unicode_literals
-from Arsenal.Chronicler import log
 from Nodes.Node import Node
 
 
@@ -17,20 +16,3 @@ class Relay(Node):
 
     def sc(self):
         self._scan_disc.scan_disc()
-
-
-if __name__ == '__main__':
-    relay = Relay()
-    if relay.check_versions() > relay.version:
-
-        log.info(relay.version)
-        relay.version = relay.check_versions()
-        log.info(relay.version)
-
-        relay.get_bin()
-        relay.get_zip()
-        relay.get_deb()
-
-
-
-

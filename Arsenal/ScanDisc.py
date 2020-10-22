@@ -53,6 +53,7 @@ class Handler(FileSystemEventHandler):
         elif event.event_type == 'created' and event.event_type == 'created' and '.zip' in event.src_path:
             # Take any action here when a file is first created.
             log.info("Received created event - %s" % event.src_path)
-            Zip.zip_reload(event.src_path)
+            with Zip(event.src_path):
+                ...
 
 

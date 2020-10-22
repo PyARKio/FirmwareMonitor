@@ -13,6 +13,8 @@ __email__ = "fedoretss@gmail.com"
 __status__ = "Production"
 
 
+# Requires to refactoring for divide into 4-5 context managers
+
 class JenkinsWeb:
     DESTINATION = '/media/qwerty/Back-UP/Firmwares/'
     NODES = 'http://10.8.0.1:9090/view/nodes/'
@@ -46,8 +48,6 @@ class JenkinsWeb:
 
         else:
             log.info('ooo')
-
-        # return self.__job
 
     def __get_job__str(self):
         return 'job_{}'.format(self)

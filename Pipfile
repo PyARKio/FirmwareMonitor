@@ -12,6 +12,7 @@ requests = "*"
 bs4 = "*"
 celery = "*"
 watchdog = "*"
+pymongo = "*"
 
 [requires]
 python_version = "3.8"

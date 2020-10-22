@@ -1,6 +1,5 @@
 # -- coding: utf-8 --
 from __future__ import unicode_literals
-from Arsenal.Chronicler import log
 from Nodes.Node import Node
 
 
@@ -17,20 +16,3 @@ class Plug(Node):
 
     def sc(self):
         self._scan_disc.scan_disc()
-
-
-if __name__ == '__main__':
-    plug = Plug()
-    if plug.check_versions() > plug.version:
-
-        log.info(plug.version)
-        plug.version = plug.check_versions()
-        log.info(plug.version)
-
-        plug.get_bin()
-        plug.get_zip()
-        plug.get_deb()
-
-
-
-

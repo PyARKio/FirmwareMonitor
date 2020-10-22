@@ -1,2 +1,3 @@
 *.idea/
 Arsenal/__pycache__/*
+config.py

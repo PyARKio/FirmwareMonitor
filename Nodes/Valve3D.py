@@ -1,6 +1,5 @@
 # -- coding: utf-8 --
 from __future__ import unicode_literals
-from Arsenal.Chronicler import log
 from Nodes.Node import Node
 
 
@@ -17,20 +16,3 @@ class Valve3D(Node):
 
     def sc(self):
         self._scan_disc.scan_disc()
-
-
-if __name__ == '__main__':
-    valve = Valve3D()
-    if valve.check_versions() > valve.version:
-
-        log.info(valve.version)
-        valve.version = valve.check_versions()
-        log.info(valve.version)
-
-        valve.get_bin()
-        valve.get_zip()
-        valve.get_deb()
-
-
-
-
